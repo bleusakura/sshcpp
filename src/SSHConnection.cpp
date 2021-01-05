@@ -21,6 +21,49 @@ SSHConnection::SSHConnection(int id, std::string profileName, std::string user, 
 	};
 };
 
+void SSHConnection::setProfile()
+{
+	std::cout << "Profile Name: ";
+	std::cin >> this->profile.profileName;
+
+	std::cout << "User: ";
+	std::cin >> this->profile.user;
+
+	std::cout << "Host: ";
+	std::cin >> this->profile.host;
+
+	std::cout << "Port: ";
+	std::cin >> this->profile.port;
+}
+
+void SSHConnection::setProfile(std::string profileName, std::string user, std::string host, int port)
+{
+	this->profile.profileName = profileName;
+	this->profile.user= user;
+	this->profile.host = host;
+	this->profile.port = port;
+};
+
+void SSHConnection::setName(std::string profileName)
+{
+	this->profile.profileName = profileName;
+};
+
+void SSHConnection::setUser(std::string user)
+{
+	this->profile.user = user;
+};
+
+void SSHConnection::setHost(std::string host)
+{
+	this->profile.host = host;
+};
+
+void SSHConnection::setPort(int port)
+{
+	this->profile.port = port;
+};
+
 int SSHConnection::ConnectSession(){
 	int rc;
 	char *password;
