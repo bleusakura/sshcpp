@@ -64,6 +64,61 @@ void SSHConnection::setPort(int port)
 	this->profile.port = port;
 };
 
+int SSHConnection::saveProfile()
+{
+	const char* PROFILE_FORMAT_OUT = "(%s, %s, %s, %d)\n";
+	FILE* file;
+	file = fopen("profiles.dat", "a");
+	if(file == NULL){
+		return 1;
+	}
+		
+	fprintf(file, PROFILE_FORMAT_OUT, profile.profileName.c_str(), profile.user.c_str(), profile.host.c_str(), profile.port);
+	return 0;
+}
+
+int SSHConnection::readProfile()
+{
+	const char* PROFILE_FORMAT_IN = "(%[^,], %[^,], %[^,], %d)";
+	FILE* file;
+	file = fopen("profiles.dat", "r");
+	if(file == NULL){
+		setProfile();
+		return 0;
+	}
+
+	SSHProfile tempProfile;
+	char tmpName[64];
+	char tmpUser[64];
+	char tmpHost[64];
+	fseek(file, 0, SEEK_SET);
+	fscanf(file, PROFILE_FORMAT_IN, tmpName, tmpUser, tmpHost, &tempProfile.port);
+	tempProfile.profileName = tmpName;
+	tempProfile.user = tmpUser;
+	tempProfile.host = tmpHost;
+
+	std::cout << "Profile: " << tempProfile.profileName << std::endl;
+	std::cout << "  User: " << tempProfile.user << std::endl;
+	std::cout << "  Host: " << tempProfile.host<< std::endl;
+	std::cout << "  Port: " << tempProfile.port << std::endl;
+	std::cout << "Load Profile? (y/n): ";
+	std::string ans;
+	std::cin >> ans;
+	std::cout << std::endl;
+	if(ans == "yes" || ans == "y" || ans == "Y" || ans == "Yes" || ans == "YES"){
+		this->profile.profileName = tempProfile.profileName;
+		this->profile.user = tempProfile.user;
+		this->profile.host = tempProfile.host;
+		this->profile.port = tempProfile.port;
+	}
+	else{
+		setProfile();
+		return 0;
+	}
+	return 0;
+
+}
+
 int SSHConnection::ConnectSession(){
 	int rc;
 	char *password;

@@ -24,6 +24,7 @@ class SSHConnection
 	
 	SSHConnection(int id, std::string profileName, std::string user, std::string host, int port);
 	ssh_session getSession();
+	int readProfile();
 
 	// profile
 	void setProfile();
@@ -32,6 +33,7 @@ class SSHConnection
 	void setUser(std::string user);
 	void setHost(std::string host);
 	void setPort(int port);
+	int saveProfile();
 
 	// connection
 	int AuthenticateUser();
